@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac;
 
 namespace NamedDelegate
 {
@@ -6,7 +7,21 @@ namespace NamedDelegate
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var container = BuildContainer();
+
+            var service = container.Resolve<SomeService>();
+            service.Execute("A");
+            service.Execute("B");
+        }
+
+        static IContainer BuildContainer()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterType<SomeService>();
+            builder.RegisterType<TheActualNamedDelegate>();
+            builder.RegisterType<StrategyA>().Named<IStrategy>("A");
+            builder.RegisterType<StrategyB>().Named<IStrategy>("B");
+            return builder.Build();
         }
     }
 }
