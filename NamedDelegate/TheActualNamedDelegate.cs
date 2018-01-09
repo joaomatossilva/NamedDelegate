@@ -16,7 +16,14 @@ namespace NamedDelegate
 
         public T GetNamed<T>(string name)
         {
-            return _context.ResolveNamed<T>(name);
+            try
+            {
+                return _context.ResolveNamed<T>(name);
+            }
+            catch(Autofac.Core.Registration.ComponentNotRegisteredException)
+            {
+                return _context.Resolve<T>();
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ namespace NamedDelegate
             var service = container.Resolve<SomeService>();
             service.Execute("A");
             service.Execute("B");
+            service.Execute("C");
         }
 
         static IContainer BuildContainer()
@@ -20,6 +21,7 @@ namespace NamedDelegate
             builder.RegisterType<SomeService>();
             builder.RegisterType<TheActualNamedDelegate>();
             builder.RegisterType<StrategyA>().Named<IStrategy>("A");
+            builder.RegisterType<StrategyDefault>().AsImplementedInterfaces();
             builder.RegisterType<StrategyB>().Named<IStrategy>("B");
             return builder.Build();
         }
